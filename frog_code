@@ -1,0 +1,30 @@
+import itertools 
+iterable = [1,2,3,4,5,6,7,8,9,10]
+z = 1/(len(iterable)+1) # this gives fraction that is missed in all groups as it is prob of the first jump
+current_prob=[]
+current_prob.append(1/(iterable[-1]+1))
+for x in iterable:
+    a = list(itertools.combinations(iterable, x)) 
+#this will give all combinations for x+1 jumps e.g if x=2 you get all subgroups that would lead to 3 jumps
+    fractions = []
+    for i in range(0,len(a)):
+        frac = 1
+        for j in a[i]:
+            b = 1/j
+            frac*=b
+        fractions.append(frac)
+    total = 0
+    for y in fractions:
+        total+=y
+    current_prob.append(total*z)
+
+steps = iterable
+steps.append(len(iterable)+1)
+expected = 0
+for i in range(1,len(steps)+1):
+    expected=(i*current_prob[i-1])+expected
+
+for i in range(1,len(steps)+1):
+    print(f"Probabilty of haivng {i} jumps is {current_prob[i-1]}")
+
+print(expected)
